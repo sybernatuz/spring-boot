@@ -4,6 +4,10 @@
 	<#include "/modules/common/seo.ftl">
 </head>
 <body>
-	<h1>HOME</h1>
+	<#if users??>
+		<#list users as user>
+			${user.username}
+		</#list> 
+	</#if>
 </body>
 </html>

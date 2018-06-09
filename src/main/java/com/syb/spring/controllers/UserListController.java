@@ -10,19 +10,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.syb.spring.entities.ResponseHolder;
 import com.syb.spring.services.SeoService;
+import com.syb.spring.services.UserService;
 
 @Controller
-@RequestMapping("/")
-public class HomeController {
+@RequestMapping("/users")
+public class UserListController {
 	
-	private static String VIEW_NAME = "/pages/home";
+	private static final String VIEW_NAME = "pages/listUser";
 	
+	@Autowired
+	private UserService userService;
 	@Autowired
 	private SeoService seoService;
 	
 	@GetMapping
-	public String handleRequest(HttpServletRequest request, Model model) {
+	private String handleRequest(HttpServletRequest request, Model model) {
 		ResponseHolder responseHolder = new ResponseHolder(request);
+		userService.getAll(model);
 		seoService.process(model, responseHolder, request);
 		return VIEW_NAME;
 	}
