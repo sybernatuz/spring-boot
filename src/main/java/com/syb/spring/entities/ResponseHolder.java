@@ -3,14 +3,22 @@ package com.syb.spring.entities;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.ui.Model;
+
 public class ResponseHolder{
 
 
     private HashMap<String, Object> response;
-
-    public ResponseHolder(Map<String,String> pathVariables) {
+    
+    public ResponseHolder(Map<String,String> requestVariables, Model model) {
         this();
-        addPathVariables(pathVariables);
+        addPathVariables(requestVariables);
+        model.addAllAttributes(response);
+    }
+    
+    public ResponseHolder(Map<String,String> requestVariables) {
+        this();
+        addPathVariables(requestVariables);
     }
     
     public ResponseHolder() {
@@ -25,8 +33,8 @@ public class ResponseHolder{
         return this.response.get(key);
     }
     
-    private void addPathVariables(Map<String,String> pathVariables) {
-    	if (pathVariables != null)
-    		pathVariables.forEach((key, value) -> setResponse(key, value));
+    private void addPathVariables(Map<String,String> requestVariables) {
+    	if (requestVariables != null)
+    		requestVariables.forEach((key, value) -> setResponse(key, value));
     }
 }

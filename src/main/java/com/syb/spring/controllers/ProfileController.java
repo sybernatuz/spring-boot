@@ -30,8 +30,8 @@ public class ProfileController {
 	private PageConfiguration profilePageConfiguration;
 
 	@GetMapping
-	public String handleRequest(@PathVariable Map<String, String> path, HttpServletRequest request, Model model) {
-		ResponseHolder responseHolder = new ResponseHolder(path);
+	public String handleRequest(@PathVariable Map<String, String> requestVariables, HttpServletRequest request, Model model) {
+		ResponseHolder responseHolder = new ResponseHolder(requestVariables);
 		userService.getById(model, responseHolder);
 		seoService.process(model, responseHolder, request, profilePageConfiguration);
 		return VIEW_NAME;

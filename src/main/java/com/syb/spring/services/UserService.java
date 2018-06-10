@@ -9,12 +9,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.syb.spring.dao.UserRepositoy;
 import com.syb.spring.entities.ResponseHolder;
 import com.syb.spring.entities.User;
+import com.syb.spring.enums.RoleEnum;
 
 
 @Service
@@ -25,6 +27,14 @@ public class UserService {
 	
 	@Autowired
 	private UserRepositoy userDao;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	public void login(ResponseHolder responseHolder) {
+		User user = new User();
+		user.setUsername(responseHolder.getResponse("username").toString());
+		user.setPassword(responseHolder.getResponse("password").toString());
+	}
 	
 	public void getAll(Model model) {
 		List<User> users = new ArrayList<>();
@@ -43,11 +53,13 @@ public class UserService {
 		model.addAttribute("user", userDao.findById(Integer.parseInt(id)).orElse(null));
 	}
 	
-	public void save(User user) {
+	public void save(User user, RoleEnum role) {
 		if (user == null)
 			return;
+		user.setRole(role.toString());
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		userDao.save(user);
-		log.info("User ajouté : (id=" + user.getId());
+		log.info("User ajouté : (username=" + user.getUsername() + ")");
 	}
 	
 	public void delete(User user) {

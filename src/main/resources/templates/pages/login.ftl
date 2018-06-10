@@ -5,7 +5,9 @@
 	<#include "/modules/common/seo.ftl">
 </head>
 <body>
-	<h1>ERROR</h1>
-	404
+	<#if error??>
+		une erreur est survenue
+	</#if>
+	<#include "/modules/forms/loginForm.ftl">
 </body>
 </html>

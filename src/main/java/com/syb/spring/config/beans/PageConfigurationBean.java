@@ -39,4 +39,12 @@ public class PageConfigurationBean {
 		pageConfiguration.setName("User List");
 		return pageConfiguration;
 	}
+	
+	@Bean
+	public PageConfiguration signingPageConfiguration() {
+		PageConfiguration pageConfiguration = new PageConfiguration();
+		pageConfiguration.setId(5);
+		pageConfiguration.setName("Signing");
+		return pageConfiguration;
+	}
 }
