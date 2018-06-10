@@ -1,11 +1,14 @@
 package com.syb.spring.controllers;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.syb.spring.entities.PageConfiguration;
@@ -14,23 +17,23 @@ import com.syb.spring.services.SeoService;
 import com.syb.spring.services.UserService;
 
 @Controller
-@RequestMapping("/users")
-public class UserListController {
-	
-	private static final String VIEW_NAME = "listUser";
+@RequestMapping("/user/{userId}")
+public class ProfileController {
+
+	private static final String VIEW_NAME = "user";
 	
 	@Autowired
 	private UserService userService;
 	@Autowired
 	private SeoService seoService;
 	@Autowired
-	private PageConfiguration userListPageConfiguration;
-	
+	private PageConfiguration profilePageConfiguration;
+
 	@GetMapping
-	private String handleRequest(HttpServletRequest request, Model model) {
-		ResponseHolder responseHolder = new ResponseHolder();
-		userService.getAll(model);
-		seoService.process(model, responseHolder, request, userListPageConfiguration);
+	public String handleRequest(@PathVariable Map<String, String> path, HttpServletRequest request, Model model) {
+		ResponseHolder responseHolder = new ResponseHolder(path);
+		userService.getById(model, responseHolder);
+		seoService.process(model, responseHolder, request, profilePageConfiguration);
 		return VIEW_NAME;
 	}
 }

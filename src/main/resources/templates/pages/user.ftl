@@ -4,12 +4,9 @@
 	<#include "/modules/common/seo.ftl">
 </head>
 <body>
-	<#if users??>
-		<ul>
-			<#list users as user>
-				<li>${user.username!}</li>
-			</#list> 
-		</ul>
+	<#if user??>
+		${user.id!}
+		${user.username!}
 	</#if>
 </body>
 </html>

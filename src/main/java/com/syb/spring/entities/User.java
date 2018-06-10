@@ -3,12 +3,15 @@ package com.syb.spring.entities;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.ColumnTransformer;
+
 @Entity(name = "users")
 public class User {
 
 	@Id
 	private int id;
 	private String username;
+	@ColumnTransformer
 	private String password;
 
 	public User(int id, String username, String password) {
