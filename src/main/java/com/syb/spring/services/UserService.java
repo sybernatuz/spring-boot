@@ -13,29 +13,32 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import com.syb.spring.dao.AuthorityRepository;
 import com.syb.spring.dao.UserRepositoy;
+import com.syb.spring.entities.Authority;
 import com.syb.spring.entities.ResponseHolder;
 import com.syb.spring.entities.User;
-import com.syb.spring.enums.RoleEnum;
-
+import com.syb.spring.enums.AuthorityEnum;
 
 @Service
 @Transactional
 public class UserService {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
-	
+
 	@Autowired
 	private UserRepositoy userDao;
 	@Autowired
+	private AuthorityRepository authorityRepository;
+	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	public void login(ResponseHolder responseHolder) {
 		User user = new User();
 		user.setUsername(responseHolder.getResponse("username").toString());
 		user.setPassword(responseHolder.getResponse("password").toString());
 	}
-	
+
 	public void getAll(Model model) {
 		List<User> users = new ArrayList<>();
 		try {
@@ -45,23 +48,26 @@ public class UserService {
 			return;
 		}
 	}
-	
+
 	public void getById(Model model, ResponseHolder responseHolder) {
 		String id = (String) responseHolder.getResponse("userId");
-		if (id == null || !StringUtils.isNumeric(id)) 
+		if (id == null || !StringUtils.isNumeric(id))
 			return;
 		model.addAttribute("user", userDao.findById(Integer.parseInt(id)).orElse(null));
 	}
-	
-	public void save(User user, RoleEnum role) {
+
+	public void save(User user, AuthorityEnum authorityEnum) {
 		if (user == null)
 			return;
-		user.setRole(role.toString());
+		
+		user.setEnabled(true);
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		userDao.save(user);
+		user = userDao.save(user);
+		authorityRepository.save(new Authority(authorityEnum.toString(), user.getUsername()));
+
 		log.info("User ajouté : (username=" + user.getUsername() + ")");
 	}
-	
+
 	public void delete(User user) {
 		if (user == null)
 			return;

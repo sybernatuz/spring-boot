@@ -1,38 +1,39 @@
 package com.syb.spring.entities;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
-import org.hibernate.annotations.ColumnTransformer;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity(name = "users")
-public class User {
+public class User implements Serializable {
 
+	private static final long serialVersionUID = 6674709898127511826L;
+	
 	@Id
-	private int id;
+	@PrimaryKeyJoinColumn
+	@Column(name = "username", unique = true, nullable = false)
 	private String username;
-	@ColumnTransformer
 	private String password;
-	private String role;
-
-	public User(int id, String username, String password, String role) {
-		super();
-		this.id = id;
-		this.username = username;
-		this.password = password;
-		this.role = role;
-	}
+	private boolean enabled;
 
 	public User() {
 		super();
 	}
 
-	public int getId() {
-		return id;
+	public User(String username, String password, boolean enabled) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.enabled = enabled;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public User(String username, String password) {
+		super();
+		this.username = username;
+		this.password = password;
 	}
 
 	public String getUsername() {
@@ -51,12 +52,16 @@ public class User {
 		this.password = password;
 	}
 
-	public String getRole() {
-		return role;
+	public boolean isEnabled() {
+		return enabled;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 }

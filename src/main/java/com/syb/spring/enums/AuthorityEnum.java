@@ -1,7 +1,7 @@
 package com.syb.spring.enums;
 
-public enum RoleEnum {
-	
+public enum AuthorityEnum {
 	USER,
+	PREMIUM_USER,
 	ADMIN;
 }

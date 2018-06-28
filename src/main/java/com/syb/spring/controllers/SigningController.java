@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.syb.spring.entities.PageConfiguration;
 import com.syb.spring.entities.ResponseHolder;
 import com.syb.spring.entities.User;
-import com.syb.spring.enums.RoleEnum;
+import com.syb.spring.enums.AuthorityEnum;
 import com.syb.spring.services.SeoService;
 import com.syb.spring.services.UserService;
 
@@ -35,7 +35,7 @@ public class SigningController {
 	@RequestMapping("/login")
 	public String handleRequest(@RequestParam Map<String, String> requestVariables, Model model, HttpServletRequest request) {
         ResponseHolder responseHolder = new ResponseHolder(requestVariables, model);
-        seoService.process(model, responseHolder, request, signingPageConfiguration);		
+        seoService.process(model, responseHolder, request, signingPageConfiguration);
         return LOGIN_VIEW_NAME;
     }
 	
@@ -48,7 +48,7 @@ public class SigningController {
 	
 	@RequestMapping("/register-process")
 	private String handleRequest(@ModelAttribute User user) {
-		userService.save(user, RoleEnum.USER);
+		userService.save(user, AuthorityEnum.USER);
 		return "redirect:/";
 	}
 	    

@@ -11,7 +11,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
@@ -20,7 +19,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	DataSource dataSource;
 	
-	private static final String LOGIN_QUERY = "SELECT * FROM users WHERE username = ?";
+	private static final String LOGIN_QUERY = "select username, password, enabled from users where username=?";
+
+	private static final String AUTHORITY_QUERY = "select * from authorities where username = ?";
+	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
@@ -34,6 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.defaultSuccessUrl("/")
 				.and()
 			.logout()
+				.logoutUrl("/logout")
 				.logoutSuccessUrl("/user/login")
 				.permitAll();
 		http.csrf().disable();
@@ -44,11 +47,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		auth.jdbcAuthentication()
 			.dataSource(dataSource)
 			.passwordEncoder(passwordEncoder())
-			.usersByUsernameQuery(LOGIN_QUERY);
+			.usersByUsernameQuery(LOGIN_QUERY)
+			.authoritiesByUsernameQuery(AUTHORITY_QUERY);
 	}
 	
 	@Bean
-	public PasswordEncoder passwordEncoder() {
+	public BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 }
