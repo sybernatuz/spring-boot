@@ -12,21 +12,20 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import com.syb.spring.enums.AuthorityEnum;
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
-	DataSource dataSource;
-	
-	private static final String LOGIN_QUERY = "select username, password, enabled from users where username=?";
-
-	private static final String AUTHORITY_QUERY = "select * from authorities where username = ?";
+	private DataSource dataSource;
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-				.antMatchers("/users").authenticated()
+				.antMatchers("/users").hasAnyRole(AuthorityEnum.ADMIN.toString())
+				.antMatchers("**/edit").authenticated()
 				.and()
 			.formLogin()
 				.loginPage("/user/login").permitAll()
@@ -46,9 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication()
 			.dataSource(dataSource)
-			.passwordEncoder(passwordEncoder())
-			.usersByUsernameQuery(LOGIN_QUERY)
-			.authoritiesByUsernameQuery(AUTHORITY_QUERY);
+			.passwordEncoder(passwordEncoder());
 	}
 	
 	@Bean

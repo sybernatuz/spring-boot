@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,27 +32,15 @@ public class UserService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public void login(ResponseHolder responseHolder) {
-		User user = new User();
-		user.setUsername(responseHolder.getResponse("username").toString());
-		user.setPassword(responseHolder.getResponse("password").toString());
-	}
-
 	public void getAll(Model model) {
 		List<User> users = new ArrayList<>();
-		try {
-			userDao.findAll().forEach(user -> users.add(user));
-			model.addAttribute("users", users);
-		} catch (NullPointerException e) {
-			return;
-		}
+		userDao.findAll().forEach(user -> users.add(user));
+		model.addAttribute("users", users);
 	}
 
-	public void getById(Model model, ResponseHolder responseHolder) {
-		String id = (String) responseHolder.getResponse("userId");
-		if (id == null || !StringUtils.isNumeric(id))
-			return;
-		model.addAttribute("user", userDao.findById(Integer.parseInt(id)).orElse(null));
+	public void getByUsername(Model model, ResponseHolder responseHolder) {
+		String username = (String) responseHolder.getResponse("username");
+		model.addAttribute("user", userDao.findByUsername(username));
 	}
 
 	public void save(User user, AuthorityEnum authorityEnum) {
