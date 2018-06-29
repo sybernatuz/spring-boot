@@ -41,13 +41,11 @@ public class ProfileController {
 		return VIEW_NAME;
 	}
 	
-	@PreAuthorize("#username == principal.username")
+	@PreAuthorize("#username == authentication.name")
 	@RequestMapping("/edit")
 	public String handleRequest(@ModelAttribute User user, @PathVariable String username) {
 		System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 		System.out.println(user.getUsername());
-		System.out.println(username);
-		//return "redirect:/user/";
-		return null;
+		return "redirect:/user/";
 	}
 }
