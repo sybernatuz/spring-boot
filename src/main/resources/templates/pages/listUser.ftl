@@ -7,11 +7,8 @@
 <body>
 	<#include "/modules/common/header.ftl">
 	<#if users??>
-		<ul class="list-group">
-			<#list users as user>
-				<li class="list-group-item">${user.username!}</li>
-			</#list> 
-		</ul>
+		<#include "/modules/common/macros/listUserMacro.ftl">
+		<@list users/>
 	</#if>
 </body>
 </html>

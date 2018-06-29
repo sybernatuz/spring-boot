@@ -3,14 +3,14 @@ package com.syb.spring.entities;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 
 public class ResponseHolder{
 
 
     private HashMap<String, Object> response;
     
-    public ResponseHolder(Map<String,String> requestVariables, Model model) {
+    public ResponseHolder(Map<String,String> requestVariables, ModelMap model) {
         this();
         addPathVariables(requestVariables);
         model.addAllAttributes(response);

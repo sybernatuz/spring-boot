@@ -1,4 +1,4 @@
-<form method="post" action="/user/register-process">
+<form method="post" action="/user/register">
   <div class="form-group">
     <label for="username">Username</label>
     <input type="text" class="form-control" id="username" name ="username" placeholder="Enter username">
@@ -7,5 +7,5 @@
     <label for="password">Password</label>
     <input type="password" class="form-control" id="password" name="password" placeholder="Password">
   </div>
-  <button type="submit" class="btn btn-primary">Login</button>
+  <button type="submit" class="btn btn-primary">Register</button>
 </form>

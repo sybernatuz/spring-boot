@@ -1,3 +1,4 @@
+<#import "/spring.ftl" as spring />
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,5 +10,6 @@
 	<#if user??>
 		${user.username!}
 	</#if>
+	<#include "/modules/forms/userEditForm.ftl">
 </body>
 </html>

@@ -10,13 +10,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 
 import com.syb.spring.dao.AuthorityRepository;
 import com.syb.spring.dao.UserRepositoy;
-import com.syb.spring.entities.Authority;
 import com.syb.spring.entities.ResponseHolder;
-import com.syb.spring.entities.User;
+import com.syb.spring.entities.database.Authority;
+import com.syb.spring.entities.database.User;
 import com.syb.spring.enums.AuthorityEnum;
 
 @Service
@@ -32,13 +32,13 @@ public class UserService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
-	public void getAll(Model model) {
+	public void getAll(ModelMap model) {
 		List<User> users = new ArrayList<>();
 		userDao.findAll().forEach(user -> users.add(user));
 		model.addAttribute("users", users);
 	}
 
-	public void getByUsername(Model model, ResponseHolder responseHolder) {
+	public void getByUsername(ModelMap model, ResponseHolder responseHolder) {
 		String username = (String) responseHolder.getResponse("username");
 		model.addAttribute("user", userDao.findByUsername(username));
 	}
@@ -56,6 +56,9 @@ public class UserService {
 	}
 	
 	public void edit(User user, AuthorityEnum authorityEnum) {
+		User userNotUpdate = userDao.findByUsername(user.getUsername());
+		user.setPassword(userNotUpdate.getPassword());
+		user.setEnabled(user.isEnabled());
 		userDao.save(user);
 	}
 

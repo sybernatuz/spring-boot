@@ -1,4 +1,4 @@
-package com.syb.spring.entities;
+package com.syb.spring.entities.database;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -7,7 +7,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+
 @Entity(name = "authorities")
+@EnableAutoConfiguration
 public class Authority {
 
 	@Id
