@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.syb.spring.entities.PageConfiguration;
 import com.syb.spring.entities.ResponseHolder;
 import com.syb.spring.entities.User;
+import com.syb.spring.enums.AuthorityEnum;
 import com.syb.spring.services.SeoService;
 import com.syb.spring.services.UserService;
 
@@ -41,11 +41,10 @@ public class ProfileController {
 		return VIEW_NAME;
 	}
 	
-	@PreAuthorize("#username == authentication.name")
+	@PreAuthorize("#user.username == authentication.name")
 	@RequestMapping("/edit")
-	public String handleRequest(@ModelAttribute User user, @PathVariable String username) {
-		System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-		System.out.println(user.getUsername());
+	public String handleRequest(@ModelAttribute User user) {
+		userService.edit(user, AuthorityEnum.USER);
 		return "redirect:/user/";
 	}
 }

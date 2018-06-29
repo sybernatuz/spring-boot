@@ -54,6 +54,10 @@ public class UserService {
 
 		log.info("User ajouté : (username=" + user.getUsername() + ")");
 	}
+	
+	public void edit(User user, AuthorityEnum authorityEnum) {
+		userDao.save(user);
+	}
 
 	public void delete(User user) {
 		if (user == null)
